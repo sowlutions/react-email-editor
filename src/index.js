@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import Script from 'react-load-script'
-import styled from 'styled-components'
+import React, { Component } from "react";
+import Script from "react-load-script";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   flex: 1;
   display: flex;
-`
+`;
 
 const Editor = styled.div`
   flex: 1;
@@ -15,11 +15,11 @@ const Editor = styled.div`
     flex: 1;
     width: 100%;
     height: 100%;
-    min-height: ${props => props.minHeight || '500px'} !important;
+    min-height: ${props => props.minHeight || "500px"} !important;
     display: flex;
     border: 0px;
   }
-`
+`;
 
 export default class extends Component {
   render() {
@@ -36,66 +36,70 @@ export default class extends Component {
           minHeight={this.props.minHeight}
         />
       </Wrapper>
-    )
+    );
   }
 
   unlayerReady = () => {
-    const options = (this.props.options || {})
+    const options = this.props.options || {};
 
     if (this.props.projectId) {
-      options.projectId = this.props.projectId
+      options.projectId = this.props.projectId;
     }
 
     if (this.props.tools) {
-      options.tools = this.props.tools
+      options.tools = this.props.tools;
     }
-    
+
     if (this.props.appearance) {
-      options.appearance = this.props.appearance
+      options.appearance = this.props.appearance;
     }
 
     if (this.props.locale) {
-      options.locale = this.props.locale
+      options.locale = this.props.locale;
     }
-    
+
     unlayer.init({
       ...options,
-      id: 'editor',
-      displayMode: 'email',
-    })
+      id: "editor",
+      displayMode: "email"
+    });
 
     // All properties starting with on[Name] are registered as event listeners.
     for (const [key, value] of Object.entries(this.props)) {
-      if (/^on/.test(key) && key != 'onLoad') {
-        this.addEventListener(key, value)
+      if (/^on/.test(key) && key != "onLoad") {
+        this.addEventListener(key, value);
       }
     }
 
-    const { onLoad } = this.props
-    onLoad && onLoad()
-  }
+    if (this.props.image) {
+      this.registerCallback("image", this.props.image);
+    }
+
+    const { onLoad } = this.props;
+    onLoad && onLoad();
+  };
 
   registerCallback = (type, callback) => {
-    unlayer.registerCallback(type, callback)
-  }
+    unlayer.registerCallback(type, callback);
+  };
 
   addEventListener = (type, callback) => {
-    unlayer.addEventListener(type, callback)
-  }
+    unlayer.addEventListener(type, callback);
+  };
 
-  loadDesign = (design) => {
-    unlayer.loadDesign(design)
-  }
+  loadDesign = design => {
+    unlayer.loadDesign(design);
+  };
 
-  saveDesign = (callback) => {
-    unlayer.saveDesign(callback)
-  }
+  saveDesign = callback => {
+    unlayer.saveDesign(callback);
+  };
 
-  exportHtml = (callback) => {
-    unlayer.exportHtml(callback)
-  }
+  exportHtml = callback => {
+    unlayer.exportHtml(callback);
+  };
 
-  setMergeTags = (mergeTags) => {
-    unlayer.setMergeTags(mergeTags)
-  }
+  setMergeTags = mergeTags => {
+    unlayer.setMergeTags(mergeTags);
+  };
 }
